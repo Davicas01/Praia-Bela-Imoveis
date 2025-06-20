@@ -21,19 +21,19 @@ import {
 import { useAppContext } from '../context/AppContext';
 import { useIntersectionObserver, useModal } from '../hooks';
 
-// Componente de Loading Skeleton
+// Componente de Loading Skeleton melhorado
 function PropertyCardSkeleton() {
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
-      <div className="h-64 bg-gray-300"></div>
+      <div className="h-64 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"></div>
       <div className="p-6">
-        <div className="h-4 bg-gray-300 rounded mb-2"></div>
-        <div className="h-6 bg-gray-300 rounded mb-4"></div>
+        <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded mb-2"></div>
+        <div className="h-6 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded mb-4"></div>
         <div className="flex space-x-4 mb-4">
-          <div className="h-4 bg-gray-300 rounded flex-1"></div>
-          <div className="h-4 bg-gray-300 rounded flex-1"></div>
+          <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded flex-1"></div>
+          <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded flex-1"></div>
         </div>
-        <div className="h-10 bg-gray-300 rounded"></div>
+        <div className="h-10 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded"></div>
       </div>
     </div>
   );
@@ -100,10 +100,31 @@ function ImageModal({ isOpen, onClose, images, currentIndex, setCurrentIndex, ti
   );
 }
 
-// Componente de Card de Propriedade
+// Componente de Card de Propriedade melhorado
 function PropertyCard({ property, onImageClick, onFavoriteToggle, onComparisonToggle, isFavorite, isInComparison }) {
   const [imageIndex, setImageIndex] = useState(0);
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Intersection Observer para lazy loading
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const cardElement = document.getElementById(`property-card-${property.id}`);
+    if (cardElement) {
+      observer.observe(cardElement);
+    }
+
+    return () => observer.disconnect();
+  }, [property.id]);
 
   const handleWhatsApp = () => {
     const message = `Olá! Tenho interesse no imóvel: ${property.title} - ${property.priceFormatted}`;
@@ -111,22 +132,28 @@ function PropertyCard({ property, onImageClick, onFavoriteToggle, onComparisonTo
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group hover-lift">
+    <div 
+      id={`property-card-${property.id}`}
+      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group hover-lift transform hover:-translate-y-2 hover:scale-[1.02]"
+    >
       {/* Imagem Principal */}
       <div className="relative h-64 overflow-hidden">
         {isImageLoading && (
-          <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse"></div>
         )}
         
-        <img
-          src={`${property.images[imageIndex]}?w=400&h=300&fit=crop`}
-          alt={property.title}
-          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
-            isImageLoading ? 'opacity-0' : 'opacity-100'
-          }`}
-          onLoad={() => setIsImageLoading(false)}
-          onClick={() => onImageClick(property.images, imageIndex)}
-        />
+        {isVisible && (
+          <img
+            src={`${property.images[imageIndex]}?w=400&h=300&fit=crop`}
+            alt={property.title}
+            className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${
+              isImageLoading ? 'opacity-0' : 'opacity-100'
+            }`}
+            onLoad={() => setIsImageLoading(false)}
+            onClick={() => onImageClick(property.images, imageIndex)}
+            loading="lazy"
+          />
+        )}
 
         {/* Badges */}
         <div className="absolute top-4 left-4 flex space-x-2">
@@ -372,19 +399,31 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
       addToComparison(propertyId);
     }
   };
-
   return (
-    <section id="properties" ref={ref} className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
-        {/* Cabeçalho */}
-        <div className={`text-center mb-12 transition-all duration-1000 ${
+    <section id="properties" ref={ref} className="py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative">
+      {/* Elementos decorativos */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary-blue/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 -left-24 w-96 h-96 bg-primary-gold/5 rounded-full blur-3xl"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Cabeçalho aprimorado */}
+        <div className={`text-center mb-20 transition-all duration-1000 ${
           hasIntersected ? 'animate-fadeIn' : 'opacity-0 translate-y-10'
         }`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            Nossos <span className="text-primary-blue">Imóveis</span>
+          <div className="inline-flex items-center bg-gradient-to-r from-primary-blue/10 to-blue-600/10 text-primary-blue px-8 py-3 rounded-full text-sm font-bold mb-8">
+            <FaHome className="mr-3" />
+            PORTFÓLIO COMPLETO
+          </div>
+          <h2 className="text-6xl md:text-7xl font-black text-gray-800 mb-8 leading-tight">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-blue via-blue-600 to-blue-800">
+              Nossos
+            </span>{' '}
+            <span className="text-gray-800">Imóveis</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Encontre o imóvel perfeito para você com nossas opções exclusivas
+          <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
+            Explore nossa coleção completa de propriedades cuidadosamente selecionadas para atender seus sonhos e necessidades
           </p>
         </div>
 
@@ -534,9 +573,7 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
               </div>
             </div>
           </div>
-        )}
-
-        {/* Grid de Propriedades */}
+        )}        {/* Grid de Propriedades melhorado */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {hasIntersected ? (
             filteredAndSortedProperties.map((property, index) => (
@@ -547,7 +584,10 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
                     ? 'animate-fadeIn' 
                     : 'opacity-0 translate-y-10'
                 }`}
-                style={{ animationDelay: `${index * 100}ms` }}
+                style={{ 
+                  animationDelay: `${index * 150}ms`,
+                  animationFillMode: 'forwards'
+                }}
               >
                 <PropertyCard
                   property={property}

@@ -60,7 +60,7 @@ body {
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(50px);
   }
   to {
     opacity: 1;
@@ -71,7 +71,7 @@ body {
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-50px);
   }
   to {
     opacity: 1;
@@ -132,28 +132,19 @@ body {
 
 @keyframes kenBurns {
   0% {
-    transform: scale(1) translate(0, 0);
-  }
-  25% {
-    transform: scale(1.05) translate(-1%, -1%);
-  }
-  50% {
-    transform: scale(1.08) translate(1%, 0);
-  }
-  75% {
-    transform: scale(1.06) translate(-0.5%, 1%);
+    transform: scale(1);
   }
   100% {
-    transform: scale(1.1) translate(0.5%, -0.5%);
+    transform: scale(1.1);
   }
 }
 
 @keyframes shimmer {
   0% {
-    background-position: -200% 0;
+    background-position: -468px 0;
   }
   100% {
-    background-position: 200% 0;
+    background-position: 468px 0;
   }
 }
 
@@ -163,15 +154,15 @@ body {
 }
 
 .animate-slideInRight {
-  animation: slideInRight 0.6s ease-out;
+  animation: slideInRight 0.8s ease-out 0.2s both;
 }
 
 .animate-slideInLeft {
-  animation: slideInLeft 0.6s ease-out;
+  animation: slideInLeft 0.8s ease-out;
 }
 
 .animate-scaleIn {
-  animation: scaleIn 0.4s ease-out;
+  animation: scaleIn 0.6s ease-out 0.4s both;
 }
 
 .animate-pulse {
@@ -190,14 +181,20 @@ body {
   animation: spin 1s linear infinite;
 }
 
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+}
+
 /* Hover effects customizados */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* Skeleton loading */
@@ -238,4 +235,59 @@ textarea:focus-visible {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* Line clamp utility */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Scroll suave customizado */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Estilo personalizado para scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1e3a8a;
+}
+
+/* Efeitos de loading melhorados */
+.loading-gradient {
+  background: linear-gradient(90deg, 
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
 }

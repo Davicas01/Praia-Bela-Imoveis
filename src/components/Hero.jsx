@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { 
   FaChevronLeft, 
-  FaChevronRight, 
-  FaSearch, 
-  FaMapMarkerAlt, 
-  FaHome, 
-  FaDollarSign 
+  FaChevronRight
 } from 'react-icons/fa';
-import { useAppContext } from '../context/AppContext';
 import { useCarousel } from '../hooks';
 
 function Hero() {
-  const { setFilters, setUIState } = useAppContext();
-  
   // Imagens do carrossel
   const heroImages = [
     {
@@ -52,38 +45,8 @@ function Hero() {
     play 
   } = useCarousel(heroImages, {
     autoPlay: true,
-    interval: 5000,
-    loop: true
+    interval: 5000,    loop: true
   });
-
-  // Estados do formulário de busca
-  const [searchForm, setSearchForm] = useState({
-    location: '',
-    type: '',
-    priceRange: ''
-  });
-
-  const handleSearchChange = (field, value) => {
-    setSearchForm(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setFilters(searchForm);
-    setUIState({ loading: true });
-    
-    // Scroll para seção de propriedades
-    setTimeout(() => {
-      document.getElementById('properties')?.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
-      setUIState({ loading: false });
-    }, 500);
-  };
 
   const currentImage = heroImages[currentIndex];
 
@@ -151,9 +114,7 @@ function Hero() {
             aria-label={`Ir para slide ${index + 1}`}
           />
         ))}
-      </div>
-
-      {/* Conteúdo Principal */}
+      </div>      {/* Conteúdo Principal */}
       <div className="relative z-10 min-h-screen flex items-center">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white">
@@ -174,82 +135,43 @@ function Hero() {
               </p>
             </div>
 
-            {/* Formulário de Busca Rápida */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-4xl mx-auto animate-scaleIn">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">
-                Busca Rápida
-              </h3>
+            {/* Call to Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-scaleIn">
+              <button
+                onClick={() => {
+                  document.getElementById('properties')?.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                  });
+                }}
+                className="bg-gradient-to-r from-primary-blue to-blue-600 text-white py-4 px-8 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center space-x-2"
+              >
+                <span>Ver Imóveis</span>
+              </button>
               
-              <form onSubmit={handleSearchSubmit} className="space-y-4 md:space-y-0 md:grid md:grid-cols-4 md:gap-4">
-                {/* Localização */}
-                <div className="relative">
-                  <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <select
-                    value={searchForm.location}
-                    onChange={(e) => handleSearchChange('location', e.target.value)}
-                    className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent text-gray-700 bg-white"
-                  >
-                    <option value="">Localização</option>
-                    <option value="praia-bela">Praia Bela</option>
-                    <option value="centro">Centro</option>
-                    <option value="beira-mar">Beira Mar</option>
-                  </select>
-                </div>
+              <a 
+                href="https://wa.me/5511999999999"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-500 text-white py-4 px-8 rounded-lg font-semibold hover:bg-green-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center space-x-2"
+              >
+                <span>Falar com Consultor</span>
+              </a>
+            </div>
 
-                {/* Tipo de Imóvel */}
-                <div className="relative">
-                  <FaHome className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <select
-                    value={searchForm.type}
-                    onChange={(e) => handleSearchChange('type', e.target.value)}
-                    className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent text-gray-700 bg-white"
-                  >
-                    <option value="">Tipo</option>
-                    <option value="casa">Casa</option>
-                    <option value="apartamento">Apartamento</option>
-                    <option value="cobertura">Cobertura</option>
-                  </select>
-                </div>
-
-                {/* Faixa de Preço */}
-                <div className="relative">
-                  <FaDollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <select
-                    value={searchForm.priceRange}
-                    onChange={(e) => handleSearchChange('priceRange', e.target.value)}
-                    className="w-full pl-10 pr-4 py-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent text-gray-700 bg-white"
-                  >
-                    <option value="">Preço</option>
-                    <option value="ate-500k">Até R$ 500k</option>
-                    <option value="500k-1m">R$ 500k - R$ 1M</option>
-                    <option value="acima-1m">Acima de R$ 1M</option>
-                  </select>
-                </div>
-
-                {/* Botão de Busca */}
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-primary-blue to-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center space-x-2"
-                >
-                  <FaSearch />
-                  <span>Buscar</span>
-                </button>
-              </form>
-
-              {/* Estatísticas Rápidas */}
-              <div className="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-gray-200">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary-blue">150+</div>
-                  <div className="text-sm text-gray-600">Imóveis</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary-blue">98%</div>
-                  <div className="text-sm text-gray-600">Satisfação</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary-blue">15+</div>
-                  <div className="text-sm text-gray-600">Anos</div>
-                </div>
+            {/* Estatísticas Rápidas */}
+            <div className="grid grid-cols-3 gap-4 mt-12 pt-6 border-t border-white/20 max-w-md mx-auto">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary-gold">150+</div>
+                <div className="text-sm text-gray-300">Imóveis</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary-gold">98%</div>
+                <div className="text-sm text-gray-300">Satisfação</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary-gold">15+</div>
+                <div className="text-sm text-gray-300">Anos</div>
               </div>
             </div>
           </div>

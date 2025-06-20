@@ -52,12 +52,12 @@ function Header() {
         isScrolled 
           ? 'bg-white/95 backdrop-blur-md shadow-xl' 
           : 'bg-white/90 backdrop-blur-sm'
-      }`}>
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">            {/* Logo elaborado mais moderno */}
+      }`}>        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo elaborado mais moderno */}
             <Link 
               to="/" 
-              className="flex items-center space-x-4 group"
+              className="flex items-center space-x-4 group flex-shrink-0"
               onClick={closeMenu}
             >
               <div className="relative">
@@ -76,55 +76,56 @@ function Header() {
                   IMÓVEIS PREMIUM
                 </p>
               </div>
-            </Link>
-
-            {/* Breadcrumbs para desktop */}
-            <div className="hidden lg:flex items-center text-sm text-gray-600">
-              <Link to="/" className="hover:text-primary-blue transition-colors">
-                Início
-              </Link>
-              {location.pathname !== '/' && (
-                <>
-                  <span className="mx-2">/</span>
-                  <span className="text-primary-blue font-medium">
-                    {getBreadcrumbs()}
-                  </span>
-                </>
-              )}            </div>
-
-            {/* Menu Desktop melhorado */}
-            <nav className="hidden lg:flex items-center space-x-2">
-              {menuItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={closeMenu}
-                    className={`group relative px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-                      isActivePath(item.path)
-                        ? 'bg-gradient-to-r from-primary-blue to-blue-600 text-white shadow-lg'
-                        : 'text-gray-700 hover:bg-gradient-to-r hover:from-primary-blue/10 hover:to-blue-600/10 hover:text-primary-blue'
-                    }`}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <Icon className={`text-lg transition-all duration-300 ${
-                        isActivePath(item.path) ? 'text-white' : 'text-primary-blue group-hover:scale-110'
-                      }`} />
-                      <span>{item.label}</span>
-                    </div>
-                    
-                    {/* Indicator animado */}
-                    {isActivePath(item.path) && (
-                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-primary-gold rounded-full animate-bounce"></div>
-                    )}
-                  </Link>
-                );
-              })}
+            </Link>            {/* Menu Desktop centralizado */}
+            <nav className="hidden lg:flex flex-1 justify-center">
+              <div className="flex items-center space-x-1">
+                {menuItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={closeMenu}
+                      className={`group relative px-8 py-3 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
+                        isActivePath(item.path)
+                          ? 'bg-gradient-to-r from-primary-blue to-blue-600 text-white shadow-xl'
+                          : 'text-gray-700 hover:bg-gradient-to-r hover:from-primary-blue/10 hover:to-blue-600/10 hover:text-primary-blue'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <Icon className={`text-lg transition-all duration-300 ${
+                          isActivePath(item.path) ? 'text-white' : 'text-primary-blue group-hover:scale-110'
+                        }`} />
+                        <span className="text-base">{item.label}</span>
+                      </div>
+                      
+                      {/* Indicator animado melhorado */}
+                      {isActivePath(item.path) && (
+                        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-3 h-1 bg-primary-gold rounded-full"></div>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
             </nav>
 
-            {/* Busca e Menu Mobile */}
-            <div className="flex items-center space-x-3">
+            {/* Breadcrumbs e Ações à direita */}
+            <div className="flex items-center space-x-4">
+              {/* Breadcrumbs para desktop */}
+              <div className="hidden lg:flex items-center text-sm text-gray-600">
+                <Link to="/" className="hover:text-primary-blue transition-colors">
+                  Início
+                </Link>
+                {location.pathname !== '/' && (
+                  <>
+                    <span className="mx-2">/</span>
+                    <span className="text-primary-blue font-medium">
+                      {getBreadcrumbs()}
+                    </span>
+                  </>
+                )}
+              </div>
+
               {/* Busca rápida */}
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
