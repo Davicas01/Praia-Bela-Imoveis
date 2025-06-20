@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FaSearch, FaFilter, FaGrid, FaTh, FaExpand, FaHeart, FaRegHeart, FaEye, FaTimes } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaThLarge, FaTh, FaExpand, FaHeart, FaRegHeart, FaEye, FaTimes } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
 
 // Modal de Imagem Fullscreen
@@ -203,8 +203,7 @@ function Galeria() {
                 }`}
               >
                 <FaTh />
-              </button>
-              <button
+              </button>              <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded transition-colors ${
                   viewMode === 'grid' 
@@ -212,7 +211,7 @@ function Galeria() {
                     : 'text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                <FaGrid />
+                <FaThLarge />
               </button>
             </div>
           </div>
