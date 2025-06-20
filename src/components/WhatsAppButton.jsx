@@ -169,17 +169,12 @@ function WhatsAppButton() {
             {isOpen ? 'Fechar chat' : 'Fale conosco no WhatsApp'}
             <div className="absolute top-1/2 left-full transform -translate-y-1/2 w-0 h-0 border-l-4 border-l-gray-800 border-t-4 border-t-transparent border-b-4 border-b-transparent"></div>
           </div>
-        </button>
-
-        {/* Indicador de Status */}
+        </button>        {/* Indicador de Status - sem animação */}
         {!isOpen && (
           <div className="absolute -top-1 -left-1">
             <div className={`w-3 h-3 rounded-full ${
               getCurrentTime() ? 'bg-green-400' : 'bg-yellow-400'
             }`}>
-              <div className={`w-3 h-3 rounded-full animate-ping ${
-                getCurrentTime() ? 'bg-green-400' : 'bg-yellow-400'
-              }`}></div>
             </div>
           </div>
         )}

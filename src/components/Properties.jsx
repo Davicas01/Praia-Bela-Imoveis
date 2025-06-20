@@ -298,7 +298,7 @@ PropertyCard.propTypes = {
 };
 
 // Componente Principal
-function Properties() {
+function Properties({ showFiltersBelow = false, maxProperties = null, showAll = false }) {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
   const { 
     filters, 
@@ -600,6 +600,10 @@ function Properties() {
   );
 }
 
-Properties.propTypes = {};
+Properties.propTypes = {
+  showFiltersBelow: PropTypes.bool,
+  maxProperties: PropTypes.number,
+  showAll: PropTypes.bool
+};
 
 export default Properties;

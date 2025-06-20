@@ -1,29 +1,32 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Properties from './components/Properties';
-import FinancingCalculator from './components/FinancingCalculator';
-import Testimonials from './components/Testimonials';
-import RegionsMap from './components/RegionsMap';
-import Contact from './components/Contact';
 import WhatsAppButton from './components/WhatsAppButton';
+
+// Páginas
+import Home from './pages/Home';
+import Imoveis from './pages/Imoveis';
+import Galeria from './pages/Galeria';
+import Contato from './pages/Contato';
 
 function App() {
   return (
     <AppProvider>
-      <div className="min-h-screen bg-white">
-        <Header />
-        <main>
-          <Hero />
-          <Properties />
-          <FinancingCalculator />
-          <Testimonials />
-          <RegionsMap />
-          <Contact />
-        </main>
-        <WhatsAppButton />
-      </div>
+      <BrowserRouter>
+        <div className="min-h-screen bg-white">
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/imoveis" element={<Imoveis />} />
+              <Route path="/galeria" element={<Galeria />} />
+              <Route path="/contato" element={<Contato />} />
+            </Routes>
+          </main>
+          <WhatsAppButton />
+        </div>
+      </BrowserRouter>
     </AppProvider>
   );
 }
