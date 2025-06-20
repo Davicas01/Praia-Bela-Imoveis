@@ -20,6 +20,7 @@ import {
 } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
 import { useIntersectionObserver } from '../hooks';
+import PropertyDetailsModal from './PropertyDetailsModal';
 
 // Componente de Loading Skeleton melhorado
 function PropertyCardSkeleton() {
@@ -101,7 +102,7 @@ function ImageModal({ isOpen, onClose, images, currentIndex, setCurrentIndex, ti
 }
 
 // Componente de Card de Propriedade melhorado
-function PropertyCard({ property, onImageClick, onFavoriteToggle, onComparisonToggle, isFavorite, isInComparison }) {
+function PropertyCard({ property, onImageClick, onFavoriteToggle, onComparisonToggle, onViewDetails, isFavorite, isInComparison }) {
   const [imageIndex, setImageIndex] = useState(0);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
@@ -296,11 +297,12 @@ function PropertyCard({ property, onImageClick, onFavoriteToggle, onComparisonTo
         {/* Descrição */}
         <p className="text-gray-600 text-sm mb-4 line-clamp-2">
           {property.description}
-        </p>
-
-        {/* Botões de Ação */}
+        </p>        {/* Botões de Ação */}
         <div className="flex space-x-2">
-          <button className="flex-1 bg-gradient-to-r from-primary-blue to-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 text-sm">
+          <button 
+            onClick={() => onViewDetails(property)}
+            className="flex-1 bg-gradient-to-r from-primary-blue to-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 text-sm"
+          >
             Ver Detalhes
           </button>
           <button
@@ -320,6 +322,7 @@ PropertyCard.propTypes = {
   onImageClick: PropTypes.func.isRequired,
   onFavoriteToggle: PropTypes.func.isRequired,
   onComparisonToggle: PropTypes.func.isRequired,
+  onViewDetails: PropTypes.func.isRequired,
   isFavorite: PropTypes.bool.isRequired,
   isInComparison: PropTypes.bool.isRequired
 };
@@ -338,7 +341,6 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
     removeFromComparison,
     setFilters
   } = useAppContext();
-
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState('featured');
   const [imageModal, setImageModal] = useState({
@@ -346,6 +348,10 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
     images: [],
     currentIndex: 0,
     title: ''
+  });
+  const [detailsModal, setDetailsModal] = useState({
+    isOpen: false,
+    property: null
   });
 
   // Filtrar e ordenar propriedades
@@ -391,13 +397,19 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
       addToFavorites(propertyId);
     }
   };
-
   const handleComparisonToggle = (propertyId) => {
     if (comparison.includes(propertyId)) {
       removeFromComparison(propertyId);
     } else if (comparison.length < 3) {
       addToComparison(propertyId);
     }
+  };
+
+  const handleViewDetails = (property) => {
+    setDetailsModal({
+      isOpen: true,
+      property
+    });
   };
   return (
     <section id="properties" ref={ref} className="py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative">
@@ -588,12 +600,12 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
                   animationDelay: `${index * 150}ms`,
                   animationFillMode: 'forwards'
                 }}
-              >
-                <PropertyCard
+              >                <PropertyCard
                   property={property}
                   onImageClick={handleImageClick}
                   onFavoriteToggle={handleFavoriteToggle}
                   onComparisonToggle={handleComparisonToggle}
+                  onViewDetails={handleViewDetails}
                   isFavorite={favorites.includes(property.id)}
                   isInComparison={comparison.includes(property.id)}
                 />
@@ -625,9 +637,7 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
             </button>
           </div>
         )}
-      </div>
-
-      {/* Modal de Imagens */}
+      </div>      {/* Modal de Imagens */}
       <ImageModal
         isOpen={imageModal.isOpen}
         onClose={() => setImageModal({ ...imageModal, isOpen: false })}
@@ -635,6 +645,13 @@ function Properties({ showFiltersBelow = false, maxProperties = null, showAll = 
         currentIndex={imageModal.currentIndex}
         setCurrentIndex={(index) => setImageModal({ ...imageModal, currentIndex: index })}
         title={imageModal.title}
+      />
+
+      {/* Modal de Detalhes */}
+      <PropertyDetailsModal
+        isOpen={detailsModal.isOpen}
+        onClose={() => setDetailsModal({ isOpen: false, property: null })}
+        property={detailsModal.property}
       />
     </section>
   );

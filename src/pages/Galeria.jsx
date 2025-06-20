@@ -230,23 +230,17 @@ function Galeria() {
       </div>
     );
   }
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
-      <div className="container mx-auto px-4">
-        {/* Header da Galeria melhorado */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center bg-primary-blue/10 text-primary-blue px-6 py-2 rounded-full text-sm font-semibold mb-6">
-            <FaThLarge className="mr-2" />
-            Galeria Completa
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Galeria de <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-blue to-blue-600">Imóveis</span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Explore nossa coleção completa de imóveis premium através de uma experiência visual imersiva e interativa
-          </p>
+    <div className="min-h-screen bg-white">
+      {/* Header Azul Padrão */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-16">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Galeria de Imóveis</h1>
+          <p className="text-xl opacity-90">Explore nossa coleção completa de imóveis premium</p>
         </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-12">
 
         {/* Controles de Busca e Filtros aprimorados */}
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-12">
@@ -340,9 +334,7 @@ function Galeria() {
               Tente ajustar os filtros de busca para encontrar mais resultados
             </p>
           </div>
-        )}
-
-        {/* Modal de Imagem */}
+        )}        {/* Modal de Imagem */}
         <ImageModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}

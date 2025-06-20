@@ -14,6 +14,7 @@ import {
   FaStar
 } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
+import PropertyDetailsModal from './PropertyDetailsModal';
 
 function FeaturedCarousel() {
   const { 
@@ -25,9 +26,12 @@ function FeaturedCarousel() {
 
   // Filtrar apenas imóveis em destaque
   const featuredProperties = properties.filter(property => property.featured);
-  
-  const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [detailsModal, setDetailsModal] = useState({
+    isOpen: false,
+    property: null
+  });
   const [visibleCards, setVisibleCards] = useState(3);
 
   // Responsividade - ajustar quantidade de cards visíveis
@@ -79,10 +83,16 @@ function FeaturedCarousel() {
       addToFavorites(propertyId);
     }
   };
-
   const handleWhatsApp = (property) => {
     const message = `Olá! Tenho interesse no imóvel: ${property.title} - ${property.priceFormatted}`;
     window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const handleViewDetails = (property) => {
+    setDetailsModal({
+      isOpen: true,
+      property
+    });
   };
 
   if (featuredProperties.length === 0) {
@@ -133,11 +143,11 @@ function FeaturedCarousel() {
                   key={property.id}
                   className={`flex-shrink-0 px-3`}
                   style={{ width: `${100 / visibleCards}%` }}
-                >
-                  <PropertyCard
+                >                  <PropertyCard
                     property={property}
                     onFavoriteToggle={handleFavoriteToggle}
                     onWhatsApp={handleWhatsApp}
+                    onViewDetails={handleViewDetails}
                     isFavorite={favorites.includes(property.id)}
                   />
                 </div>
@@ -197,15 +207,21 @@ function FeaturedCarousel() {
             className="bg-gradient-to-r from-primary-blue to-blue-600 text-white py-4 px-8 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
           >
             Ver Todos os Imóveis
-          </button>
-        </div>
+          </button>        </div>
       </div>
+
+      {/* Modal de Detalhes */}
+      <PropertyDetailsModal
+        isOpen={detailsModal.isOpen}
+        onClose={() => setDetailsModal({ isOpen: false, property: null })}
+        property={detailsModal.property}
+      />
     </section>
   );
 }
 
 // Componente do Card de Propriedade
-function PropertyCard({ property, onFavoriteToggle, onWhatsApp, isFavorite }) {
+function PropertyCard({ property, onFavoriteToggle, onWhatsApp, onViewDetails, isFavorite }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   return (
@@ -314,11 +330,12 @@ function PropertyCard({ property, onFavoriteToggle, onWhatsApp, isFavorite }) {
         {/* Descrição */}
         <p className="text-gray-600 text-sm mb-4 line-clamp-2">
           {property.description}
-        </p>
-
-        {/* Botões de Ação */}
+        </p>        {/* Botões de Ação */}
         <div className="flex space-x-2">
-          <button className="flex-1 bg-gradient-to-r from-primary-blue to-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 text-sm transform hover:scale-105">
+          <button 
+            onClick={() => onViewDetails(property)}
+            className="flex-1 bg-gradient-to-r from-primary-blue to-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 text-sm transform hover:scale-105"
+          >
             Ver Detalhes
           </button>
           <button
@@ -337,6 +354,7 @@ PropertyCard.propTypes = {
   property: PropTypes.object.isRequired,
   onFavoriteToggle: PropTypes.func.isRequired,
   onWhatsApp: PropTypes.func.isRequired,
+  onViewDetails: PropTypes.func.isRequired,
   isFavorite: PropTypes.bool.isRequired
 };
 
