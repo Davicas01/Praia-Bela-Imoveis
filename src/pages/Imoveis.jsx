@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchSection from '../components/SearchSection';
 import Properties from '../components/Properties';
 
 function Imoveis() {
@@ -11,6 +12,9 @@ function Imoveis() {
           <p className="text-xl opacity-90">Encontre o imóvel perfeito para você</p>
         </div>
       </div>
+
+      {/* Seção de busca avançada */}
+      <SearchSection />
 
       {/* Lista completa de propriedades */}
       <Properties showFiltersBelow={true} showAll={true} />

@@ -19,7 +19,7 @@ import {
   FaBalanceScale
 } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
-import { useIntersectionObserver, useModal } from '../hooks';
+import { useIntersectionObserver } from '../hooks';
 
 // Componente de Loading Skeleton melhorado
 function PropertyCardSkeleton() {
