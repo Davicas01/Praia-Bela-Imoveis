@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://praiabelaimoveis.vercel.app/sitemap.xml
+
+# Otimização para bots de busca
+Crawl-delay: 1
