@@ -10,10 +10,9 @@ import Imoveis from './pages/Imoveis';
 import Galeria from './pages/Galeria';
 import Contato from './pages/Contato';
 
-function App() {
-  return (
+function App() {  return (
     <AppProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/Praia-Bela-Imoveis">
         <div className="min-h-screen bg-white">
           <Header />
           <main>
