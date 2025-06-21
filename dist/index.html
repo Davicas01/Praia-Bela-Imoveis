@@ -9,10 +9,9 @@
     <meta name="description" content="Os melhores imóveis da região com preços imperdíveis. Casas, apartamentos e coberturas à beira-mar. Encontre sua casa dos sonhos com a Praia Bela Imóveis." />
     <meta name="keywords" content="imóveis, casa, apartamento, cobertura, praia bela, imobiliária, venda, aluguel" />
     <meta name="author" content="Praia Bela Imóveis" />
-    
-    <!-- Open Graph / Facebook -->
+      <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://praiabelaimoveis.vercel.app/" />
+    <meta property="og:url" content="https://davicas01.github.io/Praia-Bela-Imoveis/" />
     <meta property="og:title" content="Praia Bela Imóveis - Encontre seu lar ideal" />
     <meta property="og:description" content="Os melhores imóveis da região com preços imperdíveis. Encontre sua casa dos sonhos." />
     <meta property="og:image" content="https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-4.0.3&w=1200&h=630&fit=crop" />
@@ -60,12 +59,24 @@
         "https://wa.me/5511999999999"
       ]
     }
-    </script>
-    <script type="module" crossorigin src="/Praia-Bela-Imoveis/assets/index-ixN3yrGp.js"></script>
+    </script>    <script type="module" crossorigin src="/Praia-Bela-Imoveis/assets/index-ixN3yrGp.js"></script>
     <link rel="modulepreload" crossorigin href="/Praia-Bela-Imoveis/assets/react-CIP6LD3P.js">
     <link rel="stylesheet" crossorigin href="/Praia-Bela-Imoveis/assets/index-Cy_Sg_Qz.css">
   </head>
   <body>
+    <!-- Script para lidar com redirecionamentos do GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
     <div id="root"></div>
   </body>
 </html>
